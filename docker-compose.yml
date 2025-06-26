@@ -1,47 +1,41 @@
-﻿version: '3.5'
-
-services:
-  Implem.Pleasanter:
+﻿services:
+  pleasanter:
     build:
       context: .
       dockerfile: ./Implem.Pleasanter/Dockerfile
     environment:
-        - Implem.Pleasanter_Rds_PostgreSQL_SaConnectionString=${Implem_Pleasanter_Rds_PostgreSQL_SaConnectionString}
-        - Implem.Pleasanter_Rds_PostgreSQL_OwnerConnectionString=${Implem_Pleasanter_Rds_PostgreSQL_OwnerConnectionString}
-        - Implem.Pleasanter_Rds_PostgreSQL_UserConnectionString=${Implem_Pleasanter_Rds_PostgreSQL_UserConnectionString}
-    image: implem.pleasanter
-    container_name: pleasanter
+      Implem.Pleasanter_Rds_PostgreSQL_SaConnectionString: ${Implem_Pleasanter_Rds_PostgreSQL_SaConnectionString}
+      Implem.Pleasanter_Rds_PostgreSQL_OwnerConnectionString: ${Implem_Pleasanter_Rds_PostgreSQL_OwnerConnectionString}
+      Implem.Pleasanter_Rds_PostgreSQL_UserConnectionString: ${Implem_Pleasanter_Rds_PostgreSQL_UserConnectionString}
+    container_name: Implem.Pleasanter
     depends_on:
       - db
-    networks:
-      - default
-  Implem.CodeDefiner:
+    ports:
+      - '50001:8080'
+  codedefiner:
     build:
       context: .
       dockerfile: ./Implem.CodeDefiner/Dockerfile
     environment:
-        - Implem.Pleasanter_Rds_PostgreSQL_SaConnectionString=${Implem_Pleasanter_Rds_PostgreSQL_SaConnectionString}
-        - Implem.Pleasanter_Rds_PostgreSQL_OwnerConnectionString=${Implem_Pleasanter_Rds_PostgreSQL_OwnerConnectionString}
-        - Implem.Pleasanter_Rds_PostgreSQL_UserConnectionString=${Implem_Pleasanter_Rds_PostgreSQL_UserConnectionString}
-    image: implem.codedefiner
-    container_name: codedefiner
+      Implem.Pleasanter_Rds_PostgreSQL_SaConnectionString: ${Implem_Pleasanter_Rds_PostgreSQL_SaConnectionString}
+      Implem.Pleasanter_Rds_PostgreSQL_OwnerConnectionString: ${Implem_Pleasanter_Rds_PostgreSQL_OwnerConnectionString}
+      Implem.Pleasanter_Rds_PostgreSQL_UserConnectionString: ${Implem_Pleasanter_Rds_PostgreSQL_UserConnectionString}
+    container_name: Implem.CodeDefiner
     depends_on:
       - db
-    networks:
-      - default
   db:
-    container_name: postgresql
-    image: postgres:15
+    container_name: postgres
+    image: postgres:17
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_HOST_AUTH_METHOD=scram-sha-256
-      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
-    ports:
-      - "5432:5432"
-    networks:
-      - default
-networks:
-  default:
-    name: pleasanternetwork
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_HOST_AUTH_METHOD
+      - POSTGRES_INITDB_ARGS
+    volumes:
+      - type: volume
+        source: pg_data
+        target: /var/lib/postgresql/data
+volumes:
+  pg_data:
+    name: ${COMPOSE_PROJECT_NAME:-default}_pg_data_volume
