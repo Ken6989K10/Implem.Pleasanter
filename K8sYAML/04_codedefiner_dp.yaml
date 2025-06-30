@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: codedefiner-job
+  namespace: pleasanter
+spec:
+  template:
+    spec:
+      containers:
+        - name: codedefiner
+          image: docker.io/ken6989k10/implempleasanter-codedifiner:latest
+          command: ["dotnet"]
+          args: ["Implem.CodeDefiner.dll", "rds","-c","Server=postgres;Database=pleasanter_db;UID=pleasanter;PWD=pleasanter_pw","/y"]
+          env:
+           - name: POSTGRES_DB
+             value: pleasanter_db
+           - name: POSTGRES_USER
+             value: pleasanter
+           - name: POSTGRES_PASSWORD
+             value: pleasanter_pw
+           - name: ConnectionStrings__DefaultConnection
+             value: "Server=postgres;Database=pleasanter_db;UID=pleasanter;PWD=pleasanter_pw"
+           - name: ConnectionStrings__Key
+             value: "Server=postgres;Database=pleasanter_db;UID=pleasanter;PWD=pleasanter_pw"
+           - name: Implem.Pleasanter_Rds_PostgreSQL_SaConnectionString
+             value: "Server=postgres;Database=pleasanter_db;UID=pleasanter;PWD=pleasanter_pw"
+           - name: Implem.Pleasanter_Rds_PostgreSQL_OwnerConnectionString
+             value: "Server=postgres;Database=#ServiceName#;UID=#ServiceName#_Owner;PWD=Pleasanter_Owner_Password"
+           - name: Implem.Pleasanter_Rds_PostgreSQL_UserConnectionString
+             value: "Server=postgres;Database=#ServiceName#;UID=#ServiceName#_User;PWD=pleasanter"
+      restartPolicy: Never

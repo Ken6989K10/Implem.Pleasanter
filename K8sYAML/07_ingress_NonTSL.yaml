@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: implempleasanter-pleasanter
+  namespace: pleasanter
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: pleasanter.san.bizaxis-dev.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: implempleasanter-pleasanter
+            port:
+              number: 80

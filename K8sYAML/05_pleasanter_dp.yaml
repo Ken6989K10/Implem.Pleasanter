@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: implempleasanter-pleasanter
+  namespace: pleasanter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: implempleasanter-pleasanter
+  template:
+    metadata:
+      labels:
+        app: implempleasanter-pleasanter
+    spec:
+      containers:
+        - name: implempleasanter-pleasanter
+          image: docker.io/ken6989k10/implempleasanter-pleasanter:latest
+          command: ["dotnet"]
+          args: ["Implem.Pleasanter.dll"]
+          ports:
+            - containerPort: 8080
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: pleasanter-db-secret
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: pleasanter-db-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pleasanter-db-secret
+                  key: POSTGRES_PASSWORD
+            - name: ConnectionStrings__DefaultConnection
+              valueFrom:
+                secretKeyRef:
+                  name: pleasanter-db-secret
+                  key: CONNECTION_STRING
+            - name: ConnectionStrings__Key
+              valueFrom:
+                secretKeyRef:
+                  name: pleasanter-db-secret
+                  key: CONNECTION_STRING
+            - name: Implem.Pleasanter_Rds_PostgreSQL_SaConnectionString
+              valueFrom:
+                secretKeyRef:
+                  name: pleasanter-db-secret
+                  key: CONNECTION_STRING
+            - name: Implem.Pleasanter_Rds_PostgreSQL_OwnerConnectionString
+              valueFrom:
+                secretKeyRef:
+                  name: pleasanter-db-secret
+                  key: OWNER_CONNECTION_STRING
+            - name: Implem.Pleasanter_Rds_PostgreSQL_UserConnectionString
+              valueFrom:
+                secretKeyRef:
+                  name: pleasanter-db-secret
+                  key: USER_CONNECTION_STRING
