@@ -168,6 +168,3 @@ This program is under the terms of the [AGPL-3.0 license.](https://github.com/Im
 
 ## Authors
 Pleasanter is developed by [IMPLEM Inc.](https://implem.co.jp)
-
-## Pleasanter user/pass
-Administrator/pleasanter_test
