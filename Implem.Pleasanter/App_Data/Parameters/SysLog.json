@@ -7,6 +7,6 @@
     "ClientId": true,
     "ExportLimit": 10000,
     "EnableLoggingToDatabase": true,
-    "EnableLoggingToFile": false,
+    "EnableLoggingToFile": true,
     "OutputErrorDetails": true
 }
