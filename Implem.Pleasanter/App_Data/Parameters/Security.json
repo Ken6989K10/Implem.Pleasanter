@@ -2,7 +2,7 @@
     "AllowIpAddresses": null,
     "IpRestrictionExcludeMembers": null,
     "MimeTypeCheckOnApi": false,
-    "PrivilegedUsers": null,
+    "PrivilegedUsers": [ "Administrator", "AdminUser1", "AdminUser2" ],
     "RevealUserDisabled": false,
     "LockoutCount": 0,
     "PasswordExpirationPeriod": 0,
